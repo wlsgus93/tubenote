@@ -1,4 +1,4 @@
-package com.myapp.learningtube.global.config;
+package com.myapp.learningtube.global.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -7,8 +7,9 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/** SpringDoc(Swagger UI) 문서·JWT Authorize 스키마만 담당. */
 @Configuration
-public class OpenApiConfig {
+public class OpenApiConfiguration {
 
     @Bean
     public OpenAPI learningTubeOpenAPI() {

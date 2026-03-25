@@ -1,6 +1,6 @@
 package com.myapp.learningtube.global.health;
 
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;

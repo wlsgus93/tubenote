@@ -1,6 +1,5 @@
-package com.myapp.learningtube.global.filter;
+package com.myapp.learningtube.global.logging;
 
-import com.myapp.learningtube.global.logging.LogMdc;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * 서블릿 필터: 요청마다 {@code X-Request-Id}(없으면 생성)·선택 {@code X-Trace-Id}를 MDC·응답 헤더에 넣어 로그·에러 응답을 한 요청으로 묶는다.
+ */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestIdFilter extends OncePerRequestFilter {

@@ -2,7 +2,7 @@ package com.myapp.learningtube.domain.auth.google;
 
 import com.myapp.learningtube.domain.auth.dto.GoogleLoginRequest;
 import com.myapp.learningtube.domain.auth.dto.GoogleLoginResponse;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;

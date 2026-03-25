@@ -9,7 +9,7 @@ import com.myapp.learningtube.domain.video.dto.UpdateProgressRequest;
 import com.myapp.learningtube.domain.video.dto.UserVideoDetailResponse;
 import com.myapp.learningtube.domain.video.dto.UserVideoSummaryResponse;
 import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import com.myapp.learningtube.global.response.PageMeta;

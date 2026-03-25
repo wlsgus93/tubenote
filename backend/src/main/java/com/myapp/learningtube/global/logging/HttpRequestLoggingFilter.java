@@ -1,6 +1,5 @@
-package com.myapp.learningtube.global.filter;
+package com.myapp.learningtube.global.logging;
 
-import com.myapp.learningtube.global.logging.LogMasking;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
- * 요청 1건당 완료 시점에 <strong>한 줄</strong> 요약 로그 (상태 코드·소요 시간). 응답 본문은 기록하지 않음.
+ * 서블릿 필터: 요청 1건이 끝날 때 메서드·경로·상태·소요 ms를 한 줄로 남긴다(본문은 기록하지 않음).
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE + 10)
@@ -50,6 +49,8 @@ public class HttpRequestLoggingFilter extends OncePerRequestFilter {
                 if (status >= 500) {
                     log.warn("HTTP {} {} -> {} {}ms", request.getMethod(), path, status, ms);
                 } else if (status >= 400) {
+                    log.info("HTTP {} {} -> {} {}ms", request.getMethod(), path, status, ms);
+                } else if (status >= 300) {
                     log.info("HTTP {} {} -> {} {}ms", request.getMethod(), path, status, ms);
                 } else {
                     log.debug("HTTP {} {} -> {} {}ms", request.getMethod(), path, status, ms);

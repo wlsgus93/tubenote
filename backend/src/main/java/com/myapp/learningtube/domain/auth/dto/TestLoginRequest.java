@@ -10,7 +10,7 @@ public class TestLoginRequest {
     @NotBlank
     @Email
     @Schema(
-            description = "고정 테스트 계정 이메일 (DataInitializer 시드와 동일)",
+            description = "고정 테스트 계정 이메일 (GlobalConfig 기동 시드와 동일)",
             example = "test@learningtube.local",
             format = "email")
     private String username;

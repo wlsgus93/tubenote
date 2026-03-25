@@ -2,7 +2,7 @@ package com.myapp.learningtube.global.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapp.learningtube.global.error.ErrorCode;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

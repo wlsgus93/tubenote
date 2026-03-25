@@ -3,7 +3,7 @@ package com.myapp.learningtube.domain.note;
 import com.myapp.learningtube.domain.note.dto.NoteResponse;
 import com.myapp.learningtube.domain.note.dto.UpdateNoteRequest;
 import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;

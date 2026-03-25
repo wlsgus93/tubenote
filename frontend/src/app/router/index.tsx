@@ -3,6 +3,7 @@ import { AppShell } from '@/components/layout/AppShell'
 import { RequireAuth } from '@/app/router/RequireAuth'
 import { RootLanding } from '@/app/router/RootLanding'
 import { LoginPage } from '@/pages/auth/LoginPage'
+import { AuthCallbackPage } from '@/pages/auth/AuthCallbackPage'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { VideosPage } from '@/pages/videos/VideosPage'
 import { VideoDetailPage } from '@/pages/video-detail/VideoDetailPage'
@@ -18,6 +19,7 @@ import { NotFoundPage } from '@/pages/not-found/NotFoundPage'
 export const router = createBrowserRouter([
   { path: '/', element: <RootLanding /> },
   { path: '/login', element: <LoginPage /> },
+  { path: '/auth/callback', element: <AuthCallbackPage /> },
   { path: '/onboarding', element: <OnboardingPage /> },
   {
     element: <RequireAuth />,

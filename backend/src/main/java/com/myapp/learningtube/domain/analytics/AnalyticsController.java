@@ -8,7 +8,7 @@ import com.myapp.learningtube.domain.analytics.dto.AnalyticsSummaryResponse;
 import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
 import com.myapp.learningtube.global.error.BusinessException;
 import com.myapp.learningtube.global.error.ErrorCode;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;

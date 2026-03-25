@@ -1,18 +1,25 @@
 package com.myapp.learningtube.global.security;
 
-import com.myapp.learningtube.global.oauth.CustomOAuth2UserService;
+import com.myapp.learningtube.global.auth.oauth.CookieOAuth2AuthorizationRequestRepository;
+import com.myapp.learningtube.global.auth.oauth.GoogleOidcUserService;
+import com.myapp.learningtube.global.auth.oauth.OAuth2AuthenticationFailureHandler;
+import com.myapp.learningtube.global.auth.oauth.OAuth2AuthenticationSuccessHandler;
+import com.myapp.learningtube.global.config.CorsProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -29,10 +36,10 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    private final CustomOAuth2UserService customOAuth2UserService;
-
-    @Value("${app.frontend.login-success-redirect:http://localhost:5173/dashboard}")
-    private String loginSuccessRedirectUrl;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final GoogleOidcUserService googleOidcUserService;
+    private final CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository;
 
     @Value("${spring.h2.console.enabled:false}")
     private boolean h2ConsoleEnabled;
@@ -41,18 +48,23 @@ public class SecurityConfig {
             JwtAuthenticationFilter jwtAuthenticationFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
             JwtAccessDeniedHandler jwtAccessDeniedHandler,
-            CustomOAuth2UserService customOAuth2UserService) {
+            OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
+            OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler,
+            GoogleOidcUserService googleOidcUserService,
+            CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
-        this.customOAuth2UserService = customOAuth2UserService;
+        this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
+        this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
+        this.googleOidcUserService = googleOidcUserService;
+        this.cookieOAuth2AuthorizationRequestRepository = cookieOAuth2AuthorizationRequestRepository;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                // oauth2Login은 authorization request 저장 등으로 세션을 사용할 수 있음
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .headers(
                         headers -> {
@@ -83,16 +95,36 @@ public class SecurityConfig {
                                         .anyRequest()
                                         .permitAll())
                 .oauth2Login(
-                        oauth ->
-                                oauth.userInfoEndpoint(u -> u.userService(customOAuth2UserService))
-                                        .successHandler(
-                                                (request, response, authentication) ->
-                                                        response.sendRedirect(loginSuccessRedirectUrl)))
+                        o ->
+                                o.authorizationEndpoint(
+                                                a ->
+                                                        a.authorizationRequestRepository(
+                                                                cookieOAuth2AuthorizationRequestRepository))
+                                        .userInfoEndpoint(u -> u.oidcUserService(googleOidcUserService))
+                                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                                        .failureHandler(oAuth2AuthenticationFailureHandler))
                 .exceptionHandling(
                         e ->
                                 e.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                         .accessDeniedHandler(jwtAccessDeniedHandler))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+    /**
+     * {@code http.cors(withDefaults())} 가 이 Bean을 사용한다. CORS 규칙은 {@link CorsProperties}(yml) 기준.
+     */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(CorsProperties corsProperties) {
+        CorsConfiguration c = new CorsConfiguration();
+        c.setAllowedOrigins(corsProperties.getAllowedOrigins());
+        c.setAllowedMethods(corsProperties.getAllowedMethods());
+        c.setAllowedHeaders(corsProperties.getAllowedHeaders());
+        c.setExposedHeaders(corsProperties.getExposedHeaders());
+        c.setAllowCredentials(corsProperties.isAllowCredentials());
+        c.setMaxAge(corsProperties.getMaxAgeSeconds());
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", c);
+        return source;
     }
 }

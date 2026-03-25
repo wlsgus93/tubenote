@@ -8,7 +8,7 @@ import com.myapp.learningtube.domain.collection.dto.CreateCollectionRequest;
 import com.myapp.learningtube.domain.collection.dto.ReorderCollectionVideosRequest;
 import com.myapp.learningtube.domain.collection.dto.UpdateCollectionRequest;
 import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import com.myapp.learningtube.global.response.PageMeta;

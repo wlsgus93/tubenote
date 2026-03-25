@@ -2,7 +2,7 @@ package com.myapp.learningtube.domain.dashboard;
 
 import com.myapp.learningtube.domain.dashboard.dto.DashboardResponse;
 import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

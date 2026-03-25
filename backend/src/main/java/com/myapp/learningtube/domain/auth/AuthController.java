@@ -5,7 +5,7 @@ import com.myapp.learningtube.domain.auth.dto.TestLoginRequest;
 import com.myapp.learningtube.domain.auth.dto.TokenResponse;
 import com.myapp.learningtube.global.error.BusinessException;
 import com.myapp.learningtube.global.error.ErrorCode;
-import com.myapp.learningtube.global.filter.RequestIdFilter;
+import com.myapp.learningtube.global.logging.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
                 "인증 — 임시 테스트 로그인 (username=이메일 `test@learningtube.local`, password=`test`, JWT sub=userId=1)")
 public class AuthController {
 
-    /** DataInitializer 시드 사용자 이메일과 동일해야 함. */
+    /** {@link com.myapp.learningtube.global.config.GlobalConfig#databaseSeedRunner} 시드와 동일해야 함. */
     private static final String TEST_USERNAME = "test@learningtube.local";
 
     private static final String TEST_PASSWORD = "test";

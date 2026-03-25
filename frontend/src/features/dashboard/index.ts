@@ -1,0 +1,6 @@
+export { DashboardNextUp } from '@/features/dashboard/DashboardNextUp'
+export type { DashboardNextUpProps } from '@/features/dashboard/DashboardNextUp'
+export { DashboardQuickActions } from '@/features/dashboard/DashboardQuickActions'
+export type { DashboardQuickActionsProps } from '@/features/dashboard/DashboardQuickActions'
+export { DashboardSection } from '@/features/dashboard/DashboardSection'
+export type { DashboardSectionProps } from '@/features/dashboard/DashboardSection'

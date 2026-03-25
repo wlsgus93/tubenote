@@ -1,0 +1,449 @@
+/* 영상 라이브러리 — 학습 자산 목록 */
+
+.vlib-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.vlib-page__status {
+  margin: 0;
+  padding: var(--space-4);
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.vlib-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+
+.vlib-search {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.vlib-search input {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--text-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.vlib-search input:focus {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 0;
+  border-color: var(--color-primary);
+}
+
+.vlib-search input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.vlib-toolbar__sort {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.vlib-toolbar__sort label {
+  font-size: var(--text-micro);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.vlib-select {
+  height: 40px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--text-small);
+  color: var(--color-text);
+  background: var(--color-surface);
+  cursor: pointer;
+  min-width: 9rem;
+}
+
+.vlib-select:focus {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 0;
+}
+
+.vlib-view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.vlib-view-toggle button {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-medium);
+  border: none;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.vlib-view-toggle button:hover {
+  background: var(--color-surface-subtle);
+  color: var(--color-text);
+}
+
+.vlib-view-toggle button[aria-pressed='true'] {
+  background: var(--color-primary-muted);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.vlib-filter-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.vlib-filter-block__label {
+  margin: 0;
+  font-size: var(--text-micro);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.vlib-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.vlib-tag-row button {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.vlib-tag-row button:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.vlib-tag-row button[aria-pressed='true'] {
+  background: var(--color-primary-muted);
+  border-color: transparent;
+  color: var(--color-primary);
+}
+
+.vlib-tag-row__clear {
+  font-size: var(--text-micro) !important;
+  border-style: dashed !important;
+}
+
+.vlib-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.vlib-meta-line__sep {
+  color: var(--color-text-subtle);
+  font-size: var(--text-micro);
+}
+
+/* 그리드 카드 */
+.vlib-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.vlib-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.vlib-card--starred {
+  border-color: var(--color-warning);
+  box-shadow: 0 0 0 1px rgba(194, 65, 12, 0.12);
+}
+
+.vlib-card__main {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+
+.vlib-card__thumb-wrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(145deg, var(--color-surface-subtle), var(--color-border));
+}
+
+.vlib-card__thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vlib-card__duration {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-micro);
+  font-weight: var(--font-weight-medium);
+  color: #fff;
+  background: rgba(28, 31, 38, 0.78);
+  border-radius: var(--radius-sm);
+}
+
+.vlib-card__body {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.vlib-card__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vlib-card__meta {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.vlib-card__collection {
+  margin: 0;
+  font-size: var(--text-micro);
+  color: var(--color-text-subtle);
+}
+
+.vlib-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.vlib-pill {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-micro);
+  color: var(--color-text-muted);
+  background: var(--color-surface-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.vlib-card__progress {
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+.vlib-card__progress-bar {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+}
+
+.vlib-card__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.vlib-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface-subtle);
+}
+
+.vlib-card__actions .vlib-select {
+  flex: 1 1 100px;
+  min-width: 0;
+  height: 36px;
+  font-size: var(--text-micro);
+}
+
+.vlib-icon-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-text-muted);
+}
+
+.vlib-icon-btn:hover {
+  background: var(--color-bg);
+  color: var(--color-warning);
+}
+
+.vlib-icon-btn[aria-pressed='true'] {
+  background: var(--color-warning-muted);
+  border-color: transparent;
+  color: var(--color-warning);
+}
+
+.vlib-icon-btn:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* 리스트 행 */
+.vlib-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.vlib-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .vlib-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vlib-row--starred {
+  border-color: var(--color-warning);
+}
+
+.vlib-row__thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--color-surface-subtle), var(--color-border));
+}
+
+.vlib-row__thumb button {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: block;
+}
+
+.vlib-row__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vlib-row__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.vlib-row__title {
+  margin: 0;
+  font-size: var(--text-section);
+  font-weight: var(--font-weight-semibold);
+  text-align: left;
+  cursor: pointer;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  line-height: var(--line-height-tight);
+}
+
+.vlib-row__title:hover {
+  color: var(--color-primary);
+}
+
+.vlib-row__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.vlib-row__actions .vlib-select {
+  height: 36px;
+  min-width: 7rem;
+}
+
+.vlib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.vlib-result-count {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}

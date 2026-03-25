@@ -14,8 +14,9 @@ export function GoogleSignInButton({ disabled = false }: GoogleSignInButtonProps
   const authorizeUrl = useMemo(() => getGoogleOAuthAuthorizeUrl(), [])
 
   /**
-   * OAuth는 최상위 창에서 열려야 하고, 상대 경로는 반드시 "앱이 떠 있는 프레임" 기준으로 절대 URL로 바꿔야 함.
-   * 그렇지 않으면 top의 base가 chrome-error:// 이거나 IDE 미리보기 부모일 때 상대 경로 해석·도메인 불일치 오류가 난다.
+   * IDE 단순 브라우저·미리보기 등에서 부모 프레임이 chrome-error:// 이거나 교차 출처면
+   * {@code top.location.assign} 이 "Domains, protocols and ports must match" 로 막힌다.
+   * 같은 origin 의 top 만 갱신하고, 그 외에는 현재 창 또는 새 탭으로 연다.
    */
   function handleClick() {
     const raw = authorizeUrl
@@ -23,11 +24,25 @@ export function GoogleSignInButton({ disabled = false }: GoogleSignInButtonProps
       raw.startsWith('http://') || raw.startsWith('https://')
         ? raw
         : new URL(raw, window.location.origin).href
+
+    const topWin = window.top
+    if (topWin == null || topWin === window.self) {
+      window.location.assign(absolute)
+      return
+    }
+
     try {
-      const topWin = window.top ?? window
-      topWin.location.assign(absolute)
+      if (topWin.location.origin === window.location.origin) {
+        topWin.location.assign(absolute)
+        return
+      }
     } catch {
-      window.open(absolute, '_blank', 'noopener,noreferrer')
+      // 교차 출처 top (chrome-error, vscode-webview 등) — top 읽기 자체가 막힘
+    }
+
+    const opened = window.open(absolute, '_blank', 'noopener,noreferrer')
+    if (!opened) {
+      window.location.assign(absolute)
     }
   }
 

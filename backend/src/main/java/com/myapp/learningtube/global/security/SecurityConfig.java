@@ -1,6 +1,5 @@
 package com.myapp.learningtube.global.security;
 
-import com.myapp.learningtube.global.auth.oauth.CookieOAuth2AuthorizationRequestRepository;
 import com.myapp.learningtube.global.auth.oauth.GoogleOidcUserService;
 import com.myapp.learningtube.global.auth.oauth.OAuth2AuthenticationFailureHandler;
 import com.myapp.learningtube.global.auth.oauth.OAuth2AuthenticationSuccessHandler;
@@ -39,7 +38,6 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final GoogleOidcUserService googleOidcUserService;
-    private final CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository;
 
     @Value("${spring.h2.console.enabled:false}")
     private boolean h2ConsoleEnabled;
@@ -50,15 +48,13 @@ public class SecurityConfig {
             JwtAccessDeniedHandler jwtAccessDeniedHandler,
             OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
             OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler,
-            GoogleOidcUserService googleOidcUserService,
-            CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository) {
+            GoogleOidcUserService googleOidcUserService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
         this.googleOidcUserService = googleOidcUserService;
-        this.cookieOAuth2AuthorizationRequestRepository = cookieOAuth2AuthorizationRequestRepository;
     }
 
     @Bean
@@ -96,11 +92,7 @@ public class SecurityConfig {
                                         .permitAll())
                 .oauth2Login(
                         o ->
-                                o.authorizationEndpoint(
-                                                a ->
-                                                        a.authorizationRequestRepository(
-                                                                cookieOAuth2AuthorizationRequestRepository))
-                                        .userInfoEndpoint(u -> u.oidcUserService(googleOidcUserService))
+                                o.userInfoEndpoint(u -> u.oidcUserService(googleOidcUserService))
                                         .successHandler(oAuth2AuthenticationSuccessHandler)
                                         .failureHandler(oAuth2AuthenticationFailureHandler))
                 .exceptionHandling(

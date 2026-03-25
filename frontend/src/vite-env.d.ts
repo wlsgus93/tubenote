@@ -2,11 +2,7 @@
 
 interface ImportMetaEnv {
   readonly VITE_API_BASE_URL?: string
-  /**
-   * Google OAuth 진입 전체 URL (ngrok 등). 예:
-   * https://xxxx.ngrok-free.app/oauth2/authorization/google
-   * 비우면 VITE_API_BASE_URL 기준으로 경로 조합, 그것도 없으면 /oauth2/authorization/google
-   */
+  /** 거의 불필요. OAuth 시작 URL만 API 베이스와 다를 때만. */
   readonly VITE_OAUTH_GOOGLE_URL?: string
 }
 

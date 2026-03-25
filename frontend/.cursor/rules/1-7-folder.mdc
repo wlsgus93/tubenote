@@ -1,0 +1,52 @@
+---
+alwaysApply: true
+---
+
+프로젝트 구조는 아래 원칙을 따른다.
+
+src/
+  app/
+    router/
+  pages/
+    auth/
+    dashboard/
+    videos/
+    video-detail/
+    subscriptions/
+    watch-later/
+    notes/
+    analytics/
+    settings/
+  components/
+    common/
+    layout/
+    dashboard/
+    video/
+    channel/
+    notes/
+    analytics/
+  features/
+    video-management/
+    note-management/
+    subscription-management/
+    watch-later-management/
+    learning-analytics/
+  entities/
+    video/
+    channel/
+    note/
+    user/
+  shared/
+    ui/
+    lib/
+    hooks/
+    utils/
+    constants/
+    styles/
+    types/
+  services/
+  mocks/
+  docs/
+
+이 구조를 반드시 그대로 고정할 필요는 없지만,
+페이지 / 기능 / 공통 UI / 타입 / 목업 / 서비스 레이어가 분리되도록 설계한다.

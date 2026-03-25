@@ -1,0 +1,19 @@
+---
+alwaysApply: true
+---
+
+각 단계마다 반드시 아래 문서를 생성하거나 갱신한다.
+
+필수 문서:
+- docs/stepN-plan.md
+- docs/stepN-result.md
+- docs/ui-decisions.md
+- docs/routes.md
+- docs/components.md
+
+문서 작성 규칙:
+- 구현 전에 plan 문서를 먼저 작성한다
+- 구현 후 result 문서를 작성한다
+- 공통 UI 규칙 변경 시 ui-decisions.md에 누적 기록한다
+- 컴포넌트가 추가되면 components.md를 갱신한다
+- 라우트 구조가 바뀌면 routes.md를 갱신한다

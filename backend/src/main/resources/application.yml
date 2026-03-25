@@ -76,6 +76,7 @@ learningtube:
       - X-Request-Id
       - X-Trace-Id
     max-age-seconds: 3600
+  # YouTube Data API — stub=true 이면 실제 호출 없이 고정 목록(로컬·CI). 실연동 시 false + OAuth 토큰 필요.
   youtube:
     stub: true
     api-base-url: https://www.googleapis.com/youtube/v3

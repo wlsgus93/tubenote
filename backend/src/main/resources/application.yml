@@ -1,0 +1,84 @@
+spring:
+  application:
+    name: learningtube
+  datasource:
+    url: jdbc:h2:mem:learningtube;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 16
+        jdbc:
+          time_zone: UTC
+  # PostgreSQL 예시:
+  # datasource:
+  #   url: jdbc:postgresql://localhost:5432/learningtube
+  #   username: learningtube
+  #   password: secret
+  #   driver-class-name: org.postgresql.Driver
+  # jpa:
+  #   properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8080
+  address: 0.0.0.0
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+
+logging:
+  level:
+    root: INFO
+    com.myapp.learningtube: DEBUG
+    # 성공 응답(2xx) 요약은 DEBUG만 (과다 로그 방지). 4xx/5xx는 HttpRequestLoggingFilter에서 INFO/WARN.
+    com.myapp.learningtube.global.filter.HttpRequestLoggingFilter: INFO
+
+# 개발 전용. 운영은 JWT_SECRET 환경 변수로 덮어쓴다 (최소 32바이트 권장).
+jwt:
+  secret: ${JWT_SECRET:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+  access-token-validity-ms: 900000
+
+# YouTube Data API — stub=true 이면 실제 호출 없이 고정 목록(로컬·CI). 실연동 시 false + OAuth 토큰 필요.
+learningtube:
+  cors:
+    # 브라우저에서 Authorization 포함 요청 시 credentials 사용 가능. origin 은 명시 목록만 허용.
+    allowed-origins:
+      - http://localhost:5173
+      - http://127.0.0.1:5173
+      - http://localhost:3000
+      - http://127.0.0.1:3000
+      # LAN(예: 휴대폰·다른 PC)에서 개발 서버 접속 시 — 프론트 포트에 맞출 것
+      - http://192.168.0.5:5173
+      - http://192.168.0.5:3000
+    allow-credentials: true
+    exposed-headers:
+      - X-Request-Id
+      - X-Trace-Id
+    max-age-seconds: 3600
+  youtube:
+    stub: true
+    api-base-url: https://www.googleapis.com/youtube/v3
+    channel-updates-max-videos-per-channel: 15
+  dashboard:
+    today-pick-limit: 5
+    today-pick-candidate-pool: 40
+    continue-watching-limit: 10
+    recent-notes-limit: 8
+    incomplete-videos-limit: 10
+    favorite-subscriptions-limit: 5
+    favorite-channel-recent-videos-limit: 3
+  analytics:
+    max-daily-buckets: 366
+    week-days: 7
+    month-days: 30

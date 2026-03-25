@@ -431,3 +431,46 @@ ul {
   font-size: var(--text-small);
   color: var(--color-danger, #b42318);
 }
+
+.login-error--spaced {
+  margin-top: var(--space-4);
+}
+
+.login-oauth {
+  margin-bottom: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+}
+
+.login-oauth__hint {
+  margin: 0;
+  font-size: var(--text-small);
+  color: var(--color-text-muted);
+}
+
+.login-oauth__hint code {
+  font-size: 0.9em;
+}
+
+.login-oauth__hint--muted {
+  color: var(--color-text-muted);
+  font-size: var(--text-small);
+}
+
+.login-oauth__url {
+  word-break: break-all;
+}
+
+.google-signin-action {
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.login-oauth .google-signin-action {
+  align-self: center;
+}

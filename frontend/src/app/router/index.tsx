@@ -1,5 +1,7 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { AppShell } from '@/components/layout/AppShell'
+import { RequireAuth } from '@/app/router/RequireAuth'
+import { RootLanding } from '@/app/router/RootLanding'
 import { LoginPage } from '@/pages/auth/LoginPage'
 import { DashboardPage } from '@/pages/dashboard/DashboardPage'
 import { VideosPage } from '@/pages/videos/VideosPage'
@@ -14,21 +16,26 @@ import { NotFoundPage } from '@/pages/not-found/NotFoundPage'
 
 /** docs/routes.md 와 동일한 경로 골격 */
 export const router = createBrowserRouter([
-  { path: '/', element: <Navigate to="/dashboard" replace /> },
+  { path: '/', element: <RootLanding /> },
   { path: '/login', element: <LoginPage /> },
   { path: '/onboarding', element: <OnboardingPage /> },
   {
-    element: <AppShell />,
+    element: <RequireAuth />,
     children: [
-      { path: 'dashboard', element: <DashboardPage /> },
-      { path: 'videos', element: <VideosPage /> },
-      { path: 'videos/:videoId', element: <VideoDetailPage /> },
-      { path: 'watch-later', element: <WatchLaterPage /> },
-      { path: 'notes', element: <NotesPage /> },
-      { path: 'subscriptions', element: <SubscriptionsPage /> },
-      { path: 'analytics', element: <AnalyticsPage /> },
-      { path: 'settings', element: <SettingsPage /> },
-      { path: '*', element: <NotFoundPage /> },
+      {
+        element: <AppShell />,
+        children: [
+          { path: 'dashboard', element: <DashboardPage /> },
+          { path: 'videos', element: <VideosPage /> },
+          { path: 'videos/:videoId', element: <VideoDetailPage /> },
+          { path: 'watch-later', element: <WatchLaterPage /> },
+          { path: 'notes', element: <NotesPage /> },
+          { path: 'subscriptions', element: <SubscriptionsPage /> },
+          { path: 'analytics', element: <AnalyticsPage /> },
+          { path: 'settings', element: <SettingsPage /> },
+          { path: '*', element: <NotFoundPage /> },
+        ],
+      },
     ],
   },
 ])

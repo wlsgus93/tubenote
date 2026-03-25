@@ -28,11 +28,28 @@ export type LoginRequestDto = {
   password: string
 }
 
-/** 로그인 응답 페이로드(unwrap 후) */
+/** Google ID 토큰 로그인 요청 — 백엔드가 검증 후 내부 JWT 발급 */
+export type GoogleIdTokenLoginRequestDto = {
+  idToken: string
+}
+
+/** 로그인 응답에 실릴 사용자 요약(백엔드 필드명 차이 흡수) */
+export type AuthUserPayloadDto = {
+  id?: string | number
+  userId?: string | number
+  email?: string
+  displayName?: string
+  name?: string
+  role?: string
+}
+
+/** 로그인 응답 페이로드(unwrap 후) — 이메일/구글 공통 */
 export type LoginResponsePayloadDto = {
   accessToken: string
+  refreshToken?: string
   tokenType?: string
   expiresIn?: number
+  user?: AuthUserPayloadDto
 }
 
 /** 대시보드에 실리는 영상 한 줄 — userVideoId 권장(라우트 `/videos/:userVideoId`) */

@@ -1,4 +1,4 @@
-import { clearAccessToken } from '@/shared/constants/authStorage'
+import { clearAuthSession } from '@/shared/constants/authStorage'
 import { ApiError } from '@/shared/api/errors'
 import type { ApiEnvelope } from '@/shared/types/api'
 
@@ -12,7 +12,7 @@ export type ApiClientHandlers = {
 
 let handlers: ApiClientHandlers = {
   onUnauthorized: () => {
-    clearAccessToken()
+    clearAuthSession()
     if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
       window.location.assign('/login')
     }

@@ -19,6 +19,15 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
+      /** Spring OAuth2 시작·콜백 (VITE_API_BASE_URL 비우고 상대 경로로 로그인할 때) */
+      '/oauth2': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+      '/login/oauth2': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
     },
   },
 })

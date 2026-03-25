@@ -5,7 +5,7 @@ import com.myapp.learningtube.domain.analytics.dto.AnalyticsCollectionStatDto;
 import com.myapp.learningtube.domain.analytics.dto.AnalyticsDailyResponse;
 import com.myapp.learningtube.domain.analytics.dto.AnalyticsStatusBucketDto;
 import com.myapp.learningtube.domain.analytics.dto.AnalyticsSummaryResponse;
-import com.myapp.learningtube.global.auth.CustomUserPrincipal;
+import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
 import com.myapp.learningtube.global.error.BusinessException;
 import com.myapp.learningtube.global.error.ErrorCode;
 import com.myapp.learningtube.global.filter.RequestIdFilter;

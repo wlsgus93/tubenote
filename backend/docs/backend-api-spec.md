@@ -22,6 +22,8 @@
 | `Content-Type` | 요청 본문 있을 때 | `application/json` |
 | `X-Request-Id` | 선택 | 클라이언트 생성 UUID; 없으면 서버 생성 후 응답에 반영 |
 
+> 예외: **Google 로그인**은 실서비스 연동 편의를 위해 `POST /api/auth/google/login` 경로를 추가로 제공할 수 있다(호환 alias로 `/api/v1/auth/google/login` 도 동일 동작).
+
 ### 1.2 CORS (브라우저 프론트)
 
 - 설정: `learningtube.cors.*` (`application.yml`). 기본 허용 origin: Vite `http://localhost:5173`, CRA `http://localhost:3000` 등.
@@ -177,6 +179,9 @@
 | USER_NOT_FOUND | 404 | 사용자 없음 |
 | USER_EMAIL_DUPLICATE | 409 | 이메일 중복(부분 유니크 위반) |
 | USER_INVALID_CREDENTIALS | 401 | 로그인 실패(메시지는 모호하게) |
+| GOOGLE_ID_TOKEN_INVALID | 401 | Google ID token(credential) 검증 실패(서명/iss/aud/exp 등) |
+| GOOGLE_EMAIL_NOT_VERIFIED | 401 | Google 계정 email_verified=false |
+| GOOGLE_EMAIL_MISSING | 400 | Google ID token payload에 email 없음 |
 | CHANNEL_NOT_FOUND | 404 | 채널 없음 |
 | VIDEO_NOT_FOUND | 404 | 영상 없음 |
 | COLLECTION_NOT_FOUND | 404 | 컬렉션 없음 |
@@ -286,6 +291,7 @@
 | 로그인 | POST | `/api/v1/auth/login` | N | access/refresh 발급 |
 | 토큰 갱신 | POST | `/api/v1/auth/refresh` | N | refresh body 또는 cookie |
 | 로그아웃 | POST | `/api/v1/auth/logout` | Y | refresh 폐기 |
+| Google 로그인 | POST | `/api/auth/google/login` | N | 프론트가 보낸 Google ID token 검증 후 내부 access/refresh 발급 (호환 alias: `/api/v1/auth/google/login`) |
 | 내 프로필 조회 | GET | `/api/v1/users/me` | Y | |
 | 내 프로필 수정 | PATCH | `/api/v1/users/me` | Y | |
 | 등록 채널 목록 | GET | `/api/v1/me/channels` | Y | |

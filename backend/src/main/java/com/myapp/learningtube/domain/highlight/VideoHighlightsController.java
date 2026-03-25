@@ -2,7 +2,7 @@ package com.myapp.learningtube.domain.highlight;
 
 import com.myapp.learningtube.domain.highlight.dto.CreateHighlightRequest;
 import com.myapp.learningtube.domain.highlight.dto.HighlightResponse;
-import com.myapp.learningtube.global.auth.CustomUserPrincipal;
+import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
 import com.myapp.learningtube.global.filter.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;

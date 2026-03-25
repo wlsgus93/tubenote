@@ -1,10 +1,8 @@
-package com.myapp.learningtube.global.auth;
+package com.myapp.learningtube.domain.auth;
 
-import com.myapp.learningtube.global.auth.dto.MeResponse;
-import com.myapp.learningtube.global.auth.dto.TestLoginRequest;
-import com.myapp.learningtube.global.auth.dto.TokenResponse;
-import com.myapp.learningtube.global.auth.jwt.JwtProperties;
-import com.myapp.learningtube.global.auth.jwt.JwtTokenProvider;
+import com.myapp.learningtube.domain.auth.dto.MeResponse;
+import com.myapp.learningtube.domain.auth.dto.TestLoginRequest;
+import com.myapp.learningtube.domain.auth.dto.TokenResponse;
 import com.myapp.learningtube.global.error.BusinessException;
 import com.myapp.learningtube.global.error.ErrorCode;
 import com.myapp.learningtube.global.filter.RequestIdFilter;
@@ -109,3 +107,4 @@ public class AuthController {
         return UUID.randomUUID().toString();
     }
 }
+

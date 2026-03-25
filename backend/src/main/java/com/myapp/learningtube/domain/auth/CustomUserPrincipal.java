@@ -1,4 +1,4 @@
-package com.myapp.learningtube.global.auth;
+package com.myapp.learningtube.domain.auth;
 
 import java.util.Collection;
 import java.util.List;
@@ -62,3 +62,4 @@ public class CustomUserPrincipal implements UserDetails {
         return true;
     }
 }
+

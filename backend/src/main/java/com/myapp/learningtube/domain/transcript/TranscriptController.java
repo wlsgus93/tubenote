@@ -4,7 +4,7 @@ import com.myapp.learningtube.domain.transcript.dto.SelectTranscriptTrackRequest
 import com.myapp.learningtube.domain.transcript.dto.TranscriptSyncResponse;
 import com.myapp.learningtube.domain.transcript.dto.TranscriptTrackSummaryResponse;
 import com.myapp.learningtube.domain.transcript.dto.TranscriptViewResponse;
-import com.myapp.learningtube.global.auth.CustomUserPrincipal;
+import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
 import com.myapp.learningtube.global.filter.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;

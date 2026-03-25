@@ -31,6 +31,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String nickname;
 
+    @Column(name = "profile_image_url", length = 2048)
+    private String profileImageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 32)
     private UserRole role = UserRole.MEMBER;
@@ -47,6 +50,10 @@ public class User extends BaseEntity {
         this.role = role != null ? role : UserRole.MEMBER;
     }
 
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -57,6 +64,10 @@ public class User extends BaseEntity {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
     }
 
     public UserRole getRole() {

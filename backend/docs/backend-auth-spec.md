@@ -159,8 +159,26 @@
 | 회원가입 | POST | `/api/v1/auth/signup` |
 | 로그인 | POST | `/api/v1/auth/login` |
 | 토큰 갱신 | POST | `/api/v1/auth/refresh` |
+| Google 로그인 | POST | `/api/auth/google/login` (alias: `/api/v1/auth/google/login`) |
 | Swagger UI | GET | `/swagger-ui/**` |
 | OpenAPI JSON | GET | `/v3/api-docs/**` |
+
+### 6.5 Google 로그인 (ID token → 내부 JWT)
+
+- **목적**: 프론트가 전달한 **Google ID token(credential)** 을 서버에서 검증하고, 서비스 인증을 내부 JWT로 통일한다.
+- **API**: `POST /api/auth/google/login` (호환 alias: `POST /api/v1/auth/google/login`)
+- **요청**: `{ "idToken": string }`
+- **응답**: `{ accessToken, refreshToken, user: { id, email, nickname, profileImageUrl } }`
+- **검증**
+  - `aud`(audience) = `google.auth.client-id`
+  - `iss`(issuer) ∈ {`https://accounts.google.com`, `accounts.google.com`}
+  - 만료/서명 검증 성공
+  - `email` 존재 + `email_verified=true`(운영 안전 기본)
+- **에러 코드**
+  - 401 `GOOGLE_ID_TOKEN_INVALID` / `GOOGLE_EMAIL_NOT_VERIFIED`
+  - 400 `GOOGLE_EMAIL_MISSING`
+
+> 주의: 이 단계에서는 YouTube scope 동의/Google OAuth access token 교환은 다루지 않는다.
 
 > Actuator·기타 관리 엔드포인트는 **운영에서 비활성화 또는 IP 제한**; 공개 금지.
 

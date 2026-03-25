@@ -17,6 +17,10 @@ public enum ErrorCode {
     AUTH_UNAUTHORIZED(HttpStatus.UNAUTHORIZED),
     ACCESS_FORBIDDEN(HttpStatus.FORBIDDEN),
 
+    GOOGLE_ID_TOKEN_INVALID(HttpStatus.UNAUTHORIZED),
+    GOOGLE_EMAIL_NOT_VERIFIED(HttpStatus.UNAUTHORIZED),
+    GOOGLE_EMAIL_MISSING(HttpStatus.BAD_REQUEST),
+
     VIDEO_INVALID_YOUTUBE_URL(HttpStatus.BAD_REQUEST),
     /** 동시 요청 등으로 공용 Video 유니크(youtube_video_id) 충돌 시 */
     VIDEO_YOUTUBE_ID_DUPLICATE(HttpStatus.CONFLICT),

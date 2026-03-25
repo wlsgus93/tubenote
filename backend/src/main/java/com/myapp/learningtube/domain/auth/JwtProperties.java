@@ -1,4 +1,4 @@
-package com.myapp.learningtube.global.auth.jwt;
+package com.myapp.learningtube.domain.auth;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -29,3 +29,4 @@ public class JwtProperties {
         this.accessTokenValidityMs = accessTokenValidityMs;
     }
 }
+

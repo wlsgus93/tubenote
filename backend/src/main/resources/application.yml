@@ -1,6 +1,18 @@
 spring:
   application:
     name: learningtube
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            # 로컬 실행 편의용 기본값. 운영/배포에서는 환경변수로 덮어쓴다.
+            client-id: ${GOOGLE_CLIENT_ID:101542779091-hfde6c8d1d88ehlshnjels7rbpfa8se6.apps.googleusercontent.com}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            scope:
+              - profile
+              - email
+              - https://www.googleapis.com/auth/youtube.readonly # YouTube Data API read-only
   datasource:
     url: jdbc:h2:mem:learningtube;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -29,6 +41,11 @@ server:
   port: 8080
   address: 0.0.0.0
 
+# OAuth2 로그인 성공 후 프론트 redirect URL
+app:
+  frontend:
+    login-success-redirect: ${FRONTEND_LOGIN_SUCCESS_REDIRECT:http://192.168.0.5:5173/dashboard}
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -48,6 +65,15 @@ logging:
 jwt:
   secret: ${JWT_SECRET:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
   access-token-validity-ms: 900000
+
+# Google Login (GIS ID token 검증용)
+# - OAuth2 Login(redirect) 설정과 동일한 Client ID/Secret을 쓰도록 환경변수 키를 한 세트로 통일한다.
+google:
+  auth:
+    # audience(client id) 검증에 사용
+    client-id: ${GOOGLE_CLIENT_ID:101542779091-hfde6c8d1d88ehlshnjels7rbpfa8se6.apps.googleusercontent.com}
+    # ID token 검증 자체에는 필수 아님. (추후 code exchange 단계에서 사용)
+    client-secret: ${GOOGLE_CLIENT_SECRET:}
 
 # YouTube Data API — stub=true 이면 실제 호출 없이 고정 목록(로컬·CI). 실연동 시 false + OAuth 토큰 필요.
 learningtube:

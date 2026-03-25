@@ -1,4 +1,4 @@
-package com.myapp.learningtube.global.auth.dto;
+package com.myapp.learningtube.domain.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -35,3 +35,4 @@ public class TestLoginRequest {
         this.password = password;
     }
 }
+

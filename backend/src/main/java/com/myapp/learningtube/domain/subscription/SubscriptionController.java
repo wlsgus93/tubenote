@@ -5,7 +5,7 @@ import com.myapp.learningtube.domain.subscription.dto.PatchSubscriptionRequest;
 import com.myapp.learningtube.domain.subscription.dto.SubscriptionRecentVideoResponse;
 import com.myapp.learningtube.domain.subscription.dto.SubscriptionResponse;
 import com.myapp.learningtube.domain.subscription.dto.SubscriptionSyncResponse;
-import com.myapp.learningtube.global.auth.CustomUserPrincipal;
+import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
 import com.myapp.learningtube.global.filter.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;

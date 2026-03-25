@@ -1,7 +1,7 @@
 package com.myapp.learningtube.global.security;
 
-import com.myapp.learningtube.global.auth.CustomUserPrincipal;
-import com.myapp.learningtube.global.auth.jwt.JwtTokenProvider;
+import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
+import com.myapp.learningtube.domain.auth.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

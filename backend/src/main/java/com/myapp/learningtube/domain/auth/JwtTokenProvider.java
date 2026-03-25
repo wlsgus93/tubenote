@@ -1,4 +1,4 @@
-package com.myapp.learningtube.global.auth.jwt;
+package com.myapp.learningtube.domain.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -50,3 +50,4 @@ public class JwtTokenProvider {
         return claims;
     }
 }
+

@@ -4,7 +4,7 @@ import com.myapp.learningtube.domain.queue.dto.AddQueueItemRequest;
 import com.myapp.learningtube.domain.queue.dto.QueueItemResponse;
 import com.myapp.learningtube.domain.queue.dto.ReorderQueueRequest;
 import com.myapp.learningtube.domain.queue.dto.UpdateQueueItemRequest;
-import com.myapp.learningtube.global.auth.CustomUserPrincipal;
+import com.myapp.learningtube.domain.auth.CustomUserPrincipal;
 import com.myapp.learningtube.global.filter.RequestIdFilter;
 import com.myapp.learningtube.global.response.ApiErrorResponse;
 import com.myapp.learningtube.global.response.ApiSuccessResponse;

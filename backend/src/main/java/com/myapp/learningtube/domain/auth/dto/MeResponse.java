@@ -1,4 +1,4 @@
-package com.myapp.learningtube.global.auth.dto;
+package com.myapp.learningtube.domain.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -34,3 +34,4 @@ public class MeResponse {
         this.role = role;
     }
 }
+

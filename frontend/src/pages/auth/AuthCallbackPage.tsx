@@ -26,6 +26,12 @@ export function AuthCallbackPage() {
       navigate('/login?oauthError=NO_TOKEN', { replace: true })
       return
     }
+    if (import.meta.env.DEV) {
+      console.groupCollapsed('[auth] OAuth 리다이렉트 콜백')
+      console.log('hash에서 받은 accessToken (JWT)', accessToken)
+      console.log('토큰 길이', accessToken.length)
+      console.groupEnd()
+    }
     setAccessToken(accessToken)
     navigate('/dashboard', { replace: true })
   }, [accessToken, navigate, oauthError])

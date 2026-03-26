@@ -40,6 +40,8 @@ export type AuthUserPayloadDto = {
   email?: string
   displayName?: string
   name?: string
+  /** 백엔드 `AuthUserResponse.nickname` */
+  nickname?: string
   role?: string
 }
 
@@ -91,7 +93,7 @@ export type WeeklySummaryResponseDto = {
   reviewDueCount: number
 }
 
-/** GET /api/dashboard unwrap 직후 페이로드 */
+/** GET /api/v1/dashboard unwrap 직후 페이로드(또는 `dashboard.ts`에서 백엔드 DTO 정규화 후 동일 형태) */
 export type DashboardPayloadDto = {
   nextUp: VideoCardResponseDto | null
   todayQueue: VideoCardResponseDto[]
@@ -105,17 +107,38 @@ export type DashboardPayloadDto = {
 
 // --- 영상 라이브러리·상세 (GET/PATCH) — 필드명 불일치 시 `videos.ts` 매퍼에서 보정
 
-/** GET /api/videos 항목 */
+/** POST /api/v1/videos/import-url */
+export type ImportVideoUrlRequestDto = {
+  url: string
+}
+
+/** unwrap 후 `ImportVideoUrlResponse` */
+export type ImportVideoUrlResponseDto = {
+  userVideoId?: number
+  videoId?: number
+  youtubeVideoId?: string
+  title?: string
+  thumbnailUrl?: string
+  learningStatus?: string
+}
+
+/** GET /api/v1/videos 목록 항목 — 백엔드 `UserVideoSummaryResponse` 필드 병기 */
 export type VideoLibraryItemDto = {
-  userVideoId?: string
+  userVideoId?: string | number
   id?: string
   title?: string
   channelName?: string
+  /** 백엔드 채널명 */
+  channelTitle?: string
   thumbnailUrl?: string
   durationLabel?: string
   durationSec?: number
+  /** 백엔드 재생 길이(초) */
+  durationSeconds?: number
   durationMinutes?: number
   progressPercent?: number
+  /** 백엔드 시청 진행률 */
+  watchPercent?: number
   learningStatus?: string
   priority?: string
   reviewNeeded?: boolean
@@ -147,12 +170,13 @@ export type VideoHighlightDto = {
 }
 
 export type RelatedVideoBriefDto = {
-  userVideoId?: string
+  userVideoId?: string | number
   id?: string
   title?: string
   durationLabel?: string
   learningStatus?: string
   progressPercent?: number
+  watchPercent?: number
 }
 
 export type ReviewPointDto = {
@@ -161,16 +185,20 @@ export type ReviewPointDto = {
   detail?: string
 }
 
-/** GET /api/videos/{userVideoId} unwrap 직후 */
+/** GET /api/v1/videos/{userVideoId} unwrap 직후 — 백엔드 `UserVideoDetailResponse` */
 export type VideoDetailResponseDto = {
-  userVideoId?: string
+  userVideoId?: string | number
   id?: string
   title?: string
   channelName?: string
+  channelTitle?: string
+  thumbnailUrl?: string
   durationLabel?: string
   durationSec?: number
+  durationSeconds?: number
   durationMinutes?: number
   progressPercent?: number
+  watchPercent?: number
   learningStatus?: string
   priority?: string
   reviewNeeded?: boolean
@@ -189,6 +217,8 @@ export type PatchLearningStateRequestDto = {
   learningStatus: string
 }
 
+/** 백엔드 `UpdateProgressRequest` — 둘 중 하나 이상 */
 export type PatchProgressRequestDto = {
-  progressPercent: number
+  watchPercent?: number
+  lastPositionSec?: number
 }

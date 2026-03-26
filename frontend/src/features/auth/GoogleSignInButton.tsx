@@ -25,6 +25,10 @@ export function GoogleSignInButton({ disabled = false }: GoogleSignInButtonProps
         ? raw
         : new URL(raw, window.location.origin).href
 
+    if (import.meta.env.DEV) {
+      console.log('[auth] Google OAuth 시작 — 백엔드로 이동', { authorizeUrl: raw, absolute })
+    }
+
     const topWin = window.top
     if (topWin == null || topWin === window.self) {
       window.location.assign(absolute)

@@ -9,7 +9,7 @@ import '@/features/dashboard/dashboard.css'
 import { useDashboard } from '@/shared/hooks/useDashboard'
 import { Button, EmptyState, NoteCard, StatCard, VideoCard } from '@/shared/ui'
 
-/** 학습 중심 허브 — GET /api/dashboard */
+/** 학습 중심 허브 — GET /api/v1/dashboard */
 export function DashboardPage() {
   const navigate = useNavigate()
   const { state, reload } = useDashboard()

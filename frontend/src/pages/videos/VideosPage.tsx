@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
+  AddVideoByUrlDialog,
   filterAndSortVideos,
   type VideoLibraryFilterState,
   VideoLibraryGridCard,
@@ -44,13 +45,14 @@ function collectionLabel(collections: typeof VIDEO_COLLECTIONS, id: string) {
   return collections.find((c) => c.id === id)?.name ?? '미분류'
 }
 
-/** 저장된 학습 영상 라이브러리 — GET /api/videos, PATCH learning-state */
+/** 저장된 학습 영상 라이브러리 — GET /api/v1/videos, PATCH …/learning-state */
 export function VideosPage() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const { items, setItems, status, error, reload } = useVideoLibrary()
   const [filters, setFilters] = useState<VideoLibraryFilterState>(DEFAULT_FILTERS)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  const [addUrlOpen, setAddUrlOpen] = useState(false)
 
   useEffect(() => {
     const q = searchParams.get('q')
@@ -127,6 +129,14 @@ export function VideosPage() {
 
   const openVideo = useCallback((id: string) => navigate(`/videos/${id}`), [navigate])
 
+  const handleImportSuccess = useCallback(
+    (userVideoId: string) => {
+      reload()
+      navigate(`/videos/${userVideoId}`)
+    },
+    [navigate, reload],
+  )
+
   const libraryEmpty = status === 'success' && items.length === 0
   const noResults = status === 'success' && items.length > 0 && filtered.length === 0
 
@@ -181,6 +191,17 @@ export function VideosPage() {
         onSortChange={(sortId: VideoLibrarySortId) => setFilters((f) => ({ ...f, sortId }))}
         viewMode={viewMode}
         onViewModeChange={setViewMode}
+        trailingActions={
+          <Button type="button" variant="primary" size="sm" onClick={() => setAddUrlOpen(true)}>
+            URL로 추가
+          </Button>
+        }
+      />
+
+      <AddVideoByUrlDialog
+        open={addUrlOpen}
+        onClose={() => setAddUrlOpen(false)}
+        onSuccess={handleImportSuccess}
       />
 
       <div className="vlib-filter-block">
@@ -219,11 +240,19 @@ export function VideosPage() {
       {libraryEmpty ? (
         <EmptyState
           title="아직 저장된 학습 영상이 없어요"
-          description="나중에 보기나 구독 채널에서 영상을 담으면 이 목록에 쌓입니다."
+          description="위의 「URL로 추가」로 유튜브 링크를 넣거나, 구독 채널의 최근 업로드에서 담을 수 있어요. 나중에 보기에서 옮겨 올 수도 있습니다."
           action={
-            <Button variant="primary" onClick={() => navigate('/watch-later')}>
-              나중에 보기로 이동
-            </Button>
+            <div className="vlib-empty-actions">
+              <Button variant="primary" onClick={() => setAddUrlOpen(true)}>
+                URL로 추가
+              </Button>
+              <Button variant="secondary" onClick={() => navigate('/subscriptions')}>
+                구독 채널
+              </Button>
+              <Button variant="ghost" onClick={() => navigate('/watch-later')}>
+                나중에 보기
+              </Button>
+            </div>
           }
         />
       ) : noResults ? (

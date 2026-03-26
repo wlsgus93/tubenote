@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import type { VideoLibrarySortId } from '@/shared/types/video-library'
 
 export type VideosToolbarProps = {
@@ -7,6 +8,8 @@ export type VideosToolbarProps = {
   onSortChange: (id: VideoLibrarySortId) => void
   viewMode: 'grid' | 'list'
   onViewModeChange: (mode: 'grid' | 'list') => void
+  /** URL 추가 등 보조 액션 — 툴바 오른쪽에 배치 */
+  trailingActions?: ReactNode
 }
 
 const SORT_OPTIONS: { id: VideoLibrarySortId; label: string }[] = [
@@ -25,6 +28,7 @@ export function VideosToolbar({
   onSortChange,
   viewMode,
   onViewModeChange,
+  trailingActions,
 }: VideosToolbarProps) {
   return (
     <div className="vlib-toolbar">
@@ -72,6 +76,7 @@ export function VideosToolbar({
           리스트
         </button>
       </div>
+      {trailingActions ? <div className="vlib-toolbar__actions">{trailingActions}</div> : null}
     </div>
   )
 }

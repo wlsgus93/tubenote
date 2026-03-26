@@ -13,9 +13,21 @@ export { fetchDashboard, mapDashboardPayloadToBundle } from '@/shared/api/dashbo
 export {
   fetchVideoDetail,
   fetchVideos,
+  importVideoByUrl,
   mapVideoDetailDto,
   mapVideoLibraryItemDto,
   patchVideoLearningState,
   patchVideoProgress,
   unwrapVideoListPayload,
 } from '@/shared/api/videos'
+export {
+  fetchAllSubscriptions,
+  fetchSubscriptions,
+  fetchSubscriptionRecentVideos,
+  mapRecentVideoToFeedItem,
+  mapSubscriptionResponseToChannel,
+  patchSubscription,
+  postSubscriptionChannelUpdatesSync,
+  postSubscriptionsYoutubeSync,
+  SUBSCRIPTIONS_PAGE_SIZE_MAX,
+} from '@/shared/api/subscriptions'

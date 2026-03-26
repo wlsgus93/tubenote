@@ -1,5 +1,10 @@
-import { getAccessToken } from '@/shared/constants/authStorage'
+import {
+  authHeaderForLog,
+  parseBodyPreview,
+  tryParseResponseText,
+} from '@/shared/api/apiDevLog'
 import { parseResponseUnwrap } from '@/shared/api/interceptors'
+import { getAccessToken } from '@/shared/constants/authStorage'
 
 export type ApiRequestOptions = RequestInit & {
   /** true면 Authorization 헤더를 붙이지 않음(로그인 등) */
@@ -39,11 +44,32 @@ export async function apiRequest<T>(path: string, init: ApiRequestOptions = {}):
     }
   }
 
-  const res = await fetch(buildUrl(path), {
+  const url = buildUrl(path)
+  const method = (rest.method ?? 'GET').toUpperCase()
+
+  if (import.meta.env.DEV) {
+    const authLine = headers.get('Authorization')
+    console.groupCollapsed(`[api] → ${method} ${path}`)
+    console.log('URL', url)
+    console.log('skipAuth', Boolean(skipAuth))
+    console.log('Authorization(개발 로그)', authLine ? authHeaderForLog(path, authLine) : '(없음)')
+    console.log('요청 본문', parseBodyPreview(body))
+    console.groupEnd()
+  }
+
+  const res = await fetch(url, {
     ...rest,
     headers,
     body,
   })
+
+  if (import.meta.env.DEV) {
+    const rawText = await res.clone().text()
+    console.groupCollapsed(`[api] ← ${res.status} ${method} ${path}`)
+    console.log('URL', url)
+    console.log('본문(raw 파싱)', tryParseResponseText(rawText))
+    console.groupEnd()
+  }
 
   return parseResponseUnwrap<T>(res)
 }

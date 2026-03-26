@@ -4,6 +4,13 @@ export type ChannelFocus = 'learning' | 'general'
 /** 채널 목록 정렬 키 */
 export type ChannelListSortId = 'name_asc' | 'new_desc' | 'upload_desc'
 
+/** 채널 상세의 최근 피드 한 줄 — GET `/api/v1/subscriptions/{id}/recent-videos` 매핑 */
+export type ChannelRecentFeedItem = {
+  youtubeVideoId: string
+  title: string
+  publishedAtLabel?: string
+}
+
 /** 구독 채널 한 행 — API 연동 시 동일 필드로 매핑 */
 export type ChannelSubscription = {
   id: string
@@ -13,14 +20,16 @@ export type ChannelSubscription = {
   categoryId: string
   focus: ChannelFocus
   isFavorite: boolean
-  /** 최근 N일 내 신규로 집계한 영상 수(mock) */
+  /** `unreadNewVideoCount`(아직 학습 자산에 안 담은 피드 영상 수) */
   newVideoCount: number
   /** 최근 업로드 시각 — 정렬·표시용 */
   lastUploadAt: string
   /** 구독 이유·학습 목적 등 사용자 메모 */
   memo: string
-  /** 학습 자산에 저장해 둔 해당 채널 영상 수(mock) */
+  /** 백엔드 미제공 시 UI용 0 */
   savedVideoCount: number
+  /** 목록만 로드할 때는 비움 — 상세에서 `recent-videos` 로 채울 수 있음 */
+  recentFeed?: ChannelRecentFeedItem[]
 }
 
 export type ChannelCategory = {

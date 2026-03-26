@@ -7,7 +7,7 @@ export type UseDashboardState =
   | { status: 'success'; data: DashboardBundle }
   | { status: 'error'; error: ApiError }
 
-/** 대시보드 GET /api/dashboard — 로딩·에러·재시도 */
+/** 대시보드 GET /api/v1/dashboard — 로딩·에러·재시도 */
 export function useDashboard() {
   const [state, setState] = useState<UseDashboardState>({ status: 'loading' })
 

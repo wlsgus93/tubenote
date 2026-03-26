@@ -45,11 +45,11 @@
 
 | 페이지 | 책임 | 주요 구성 |
 |--------|------|-----------|
-| `DashboardPage` | 학습 허브 — **GET `/api/dashboard`** (`useDashboard`), 로딩·에러·401 안내; 큐·이어보기·메모·주간 요약 | `DashboardNextUp`, `DashboardQuickActions`, `DashboardSection`, `VideoCard`, `NoteCard`, `StatCard`, `EmptyState` |
-| `LoginPage` | **POST `/api/auth/login`** — 이메일·비밀번호, 성공 시 토큰 저장 후 대시보드 이동 | `Button`, `login-form` 스타일 |
-| `VideosPage` | 학습 자산 — **GET `/api/videos`**, 상태 변경 **PATCH learning-state**; 검색·필터·정렬·그리드/리스트; 태그는 응답에서 수집; `?q=` 프리필 | `useVideoLibrary`, `VideosToolbar`, `VideoTagFilterBar`, `FilterBar`, `VideoLibraryGridCard`, `VideoLibraryListRow`, `EmptyState` |
-| `VideoDetailPage` | 학습 상세 — **GET `/api/videos/:userVideoId`**, **PATCH learning-state / progress**; 플레이어 스크럽·스크립트/메모·필기·하이라이트·관련·복습; `?t=초` 시 메모 탭·시각 시크 | `useVideoDetail`, `VideoInfoHeader`, `VideoPlayerPanel`, `VideoDetailMetaBar`, `ScriptPanel`, `MemoTimelinePanel`, `VideoScratchpadPanel`, `TabMenu`, 하단 섹션들 |
-| `SubscriptionsPage` | 구독 채널 — 카드·상세 정리 + **리스트·일괄**(체크·전체선택·일괄 구독 취소) | `ChannelsToolbar`, `FilterBar`, `SubscriptionChannelCard`, `ChannelDetailPanel`, `SubscriptionBulkListHeader`, `SubscriptionBulkListRow`, `SubscriptionBulkActionBar`, `EmptyState` |
+| `DashboardPage` | 학습 허브 — **GET `/api/v1/dashboard`** (`useDashboard`), 로딩·에러·401 안내; 큐·이어보기·메모·주간 요약 | `DashboardNextUp`, `DashboardQuickActions`, `DashboardSection`, `VideoCard`, `NoteCard`, `StatCard`, `EmptyState` |
+| `LoginPage` | Google OAuth 리다이렉트(백엔드 `/oauth2/...`) — API 로그인은 **POST `/api/v1/auth/test-login`** 등 | `GoogleSignInButton`, `Button` |
+| `VideosPage` | 학습 자산 — **GET `/api/v1/videos`**, **POST import-url**(URL/ID 추가), 상태 **PATCH …/learning-state**; 검색·필터·정렬·그리드/리스트; `?q=` 프리필 | `useVideoLibrary`, `VideosToolbar`, `AddVideoByUrlDialog`, `VideoTagFilterBar`, `FilterBar`, `VideoLibraryGridCard`, `VideoLibraryListRow`, `EmptyState` |
+| `VideoDetailPage` | 학습 상세 — **GET `/api/v1/videos/:userVideoId`**, **PATCH learning-state / progress**; 플레이어 스크럽·스크립트/메모·필기·하이라이트·관련·복습; `?t=초` 시 메모 탭·시각 시크 | `useVideoDetail`, `VideoInfoHeader`, `VideoPlayerPanel`, `VideoDetailMetaBar`, `ScriptPanel`, `MemoTimelinePanel`, `VideoScratchpadPanel`, `TabMenu`, 하단 섹션들 |
+| `SubscriptionsPage` | 구독 채널 — 카드·상세 정리(mock **최근 업로드**에서 import-url), **리스트·일괄** | `ChannelsToolbar`, `FilterBar`, `SubscriptionChannelCard`, `ChannelDetailPanel`, `SubscriptionBulkListHeader`, `SubscriptionBulkListRow`, `SubscriptionBulkActionBar`, `EmptyState` |
 | `WatchLaterPage` | 나중에 보기 학습 큐 — 오늘 큐·의도·우선순위·오래됨·일괄 정리·컬렉션 | `TodayQueueStrip`, `WatchLaterToolbar`, `FilterBar`, `WatchLaterListRow`, `BulkActionBar`, `EmptyState` |
 | `NotesPage` | 메모·하이라이트 아카이브 — 학습 흔적 목록·태그·복습·정렬·카드/리스트·시점 점프 | `NoteArchiveToolbar`, `FilterBar`, `NoteArchiveCard`, `NoteArchiveListRow`, `EmptyState` |
 | `AnalyticsPage` | 학습 통계 — 피드백 인트로·KPI·카테고리/주간 막대·선호 채널·길이 | `FeedbackIntro`, `AnalyticsKpiRow`, `CategoryShareSection`, `WeeklyActivityBars`, `PreferenceColumns`, `StatCard` |
@@ -75,7 +75,8 @@
 
 | 컴포넌트명 | 책임 | props | 재사용 | 사용 페이지 |
 |------------|------|-------|--------|-------------|
-| `VideosToolbar` | 검색 입력·정렬 select·그리드/리스트 토글 | `search`, `onSearchChange`, `sortId`, `onSortChange`, `viewMode`, `onViewModeChange` | 부분 | 영상 목록 |
+| `VideosToolbar` | 검색 입력·정렬 select·그리드/리스트 토글·`trailingActions` | 위 + `trailingActions?` | 부분 | 영상 목록 |
+| `AddVideoByUrlDialog` | 모달 — YouTube URL/11자 ID → `importVideoByUrl` | `open`, `onClose`, `onSuccess(userVideoId)` | 부분 | 영상 목록 |
 | `VideoTagFilterBar` | 태그 다중 토글(OR)·전체 초기화 | `tagOptions`, `selectedTags`, `onToggleTag`, `onClearTags` | 부분 | 영상 목록 |
 | `VideoLibraryGridCard` | 학습 자산 그리드 카드 + 상태·중요·컬렉션 | `video`, `collections`, `collectionName`, 콜백 | 부분 | 영상 목록 |
 | `VideoLibraryListRow` | 리스트 행 레이아웃 + 동일 액션 | 동일 | 부분 | 영상 목록 |
@@ -92,7 +93,7 @@
 |------------|------|----------------|--------|-------------|
 | `ChannelsToolbar` | 채널·메모 검색, 정렬 select | `search`, `onSearchChange`, `sortId`, `onSortChange` | 부분 | 구독 |
 | `SubscriptionChannelCard` | 학습/일반·즐겨찾기·신규·메모 미리보기 카드 | `channel`, `categoryName`, `selected`, `onSelect`, `onToggleFavorite` | 부분 | 구독 |
-| `ChannelDetailPanel` | 메모·유형·카테고리·통계·학습 자산 이동 | `channel`, `categories`, 콜백 | 부분 | 구독 |
+| `ChannelDetailPanel` | 최근 업로드(API 피드)·라이브러리 추가·메모(blur 저장)·유형·카테고리·통계·학습 자산 이동 | + `recentFeedLoading?`, `recentFeedLoadError?`, `feedSource?`, `onMemoBlur?` | 부분 | 구독 |
 | `filterAndSortChannels` | 검색·카테고리·유형·즐겨찾기·정렬 | `ChannelListFilterState` | 유틸 | 구독 |
 | `SubscriptionBulkListHeader` | 리스트 뷰 헤더·필터 결과 전체 선택 | `filtered`, `selectedIds`, 콜백 | 부분 | 구독 |
 | `SubscriptionBulkListRow` | 체크·채널 메타·행 단위 구독 취소 | `channel`, `categoryName`, 콜백 | 부분 | 구독 |
@@ -186,7 +187,7 @@
 | `VideoScratchpadPanel` | 영상별 자유 필기 `textarea` · `localStorage` 자동 저장(디바운스)·수동 저장·비우기 | `videoId` |
 | `formatTimecode` | 초 → 표시 문자열 | |
 
-**스타일**: `video-detail.css` · **데이터**: `GET /api/videos/{userVideoId}` (`videos.ts` 매퍼)
+**스타일**: `video-detail.css` · **데이터**: `GET /api/v1/videos/{userVideoId}` (`videos.ts` 매퍼)
 
 ---
 
@@ -222,7 +223,7 @@
 | 파일 | 내용 |
 |------|------|
 | `navigation.ts` | 사이드바 그룹·`badgeCount` |
-| `channels.ts` | `CHANNEL_CATEGORIES`, `CHANNEL_SUBSCRIPTIONS_MOCK` |
+| `channels.ts` | `CHANNEL_CATEGORIES` (구독 목록은 API) |
 | `watchLater.ts` | `WATCH_LATER_MOCK`, `WATCH_LATER_STALE_DAYS`, `isWatchLaterStale` |
 | `noteArchive.ts` | `NOTE_ARCHIVE_MOCK`, `NOTE_ARCHIVE_TAGS` |
 | `analytics.ts` | `ANALYTICS_MOCK`, `formatLearningMinutes` |

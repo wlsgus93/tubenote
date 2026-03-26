@@ -39,7 +39,7 @@ export function SubscriptionBulkListHeader({
       </label>
       <span className="chlib-bulk-head__col chlib-bulk-head__col--main">채널</span>
       <span className="chlib-bulk-head__col chlib-bulk-head__col--meta">분류</span>
-      <span className="chlib-bulk-head__col chlib-bulk-head__col--action">구독</span>
+      <span className="chlib-bulk-head__col chlib-bulk-head__col--action">작업</span>
     </div>
   )
 }

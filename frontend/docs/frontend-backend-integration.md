@@ -10,10 +10,19 @@
 
 | 화면 | 메서드·경로 | 비고 |
 |------|-------------|------|
-| 대시보드 | `GET /api/dashboard` | `DashboardPage` → `useDashboard` → `fetchDashboard` |
-| 로그인 | `POST /api/auth/login` | `LoginPage` → `loginAndStoreToken` (본문 JSON: `email`, `password`) |
-| 학습 자산 목록 | `GET /api/videos` | `VideosPage` → `useVideoLibrary` → `fetchVideos` |
-| 영상 상세 | `GET /api/videos/{userVideoId}` | 라우트 `:videoId` = `userVideoId` → `useVideoDetail` |
+| 대시보드 | `GET /api/v1/dashboard` | `DashboardPage` → `useDashboard` → `fetchDashboard` (`normalizeDashboardPayload`로 백엔드 `DashboardResponse` 정규화) |
+| 테스트 로그인 | `POST /api/v1/auth/test-login` | 본문 `username`, `password` — 프론트는 이메일을 `username`으로 매핑 (`AuthController` 시드: `test@learningtube.local` / `test`) |
+| Google 로그인(API) | `POST /api/v1/auth/google/login` | 본문 `{ "idToken": "..." }` |
+| 학습 자산 목록 | `GET /api/v1/videos` | `VideosPage` → `useVideoLibrary` → `fetchVideos` |
+| 영상 상세 | `GET /api/v1/videos/{userVideoId}` | 라우트 `:videoId` = `userVideoId` → `useVideoDetail` |
+| 영상 URL 등록 | `POST /api/v1/videos/import-url` | `VideosPage` · `AddVideoByUrlDialog`, `SubscriptionsPage` 채널 피드 행 |
+| 구독 목록 | `GET /api/v1/subscriptions` | `useSubscriptions` → `SubscriptionsPage` |
+| 구독 단건·수정 | `GET/PATCH /api/v1/subscriptions/{id}` | 상세 패널 카테고리·유형·즐겨찾기·메모(note) |
+| 구독별 최근 피드 | `GET /api/v1/subscriptions/{id}/recent-videos` | `useSubscriptionRecentFeed` |
+| 유튜브 구독 동기화 | `POST /api/v1/subscriptions/sync` | 페이지 헤더 버튼 |
+| 채널 업로드 피드 동기화 | `POST /api/v1/subscriptions/channel-updates/sync` | 페이지 헤더 버튼 |
+| 학습 상태 | `PATCH /api/v1/videos/{id}/learning-state` | 본문 `learningStatus`: `NOT_STARTED` 등 enum 문자열 |
+| 진행률 | `PATCH /api/v1/videos/{id}/progress` | 본문 `watchPercent` 및/또는 `lastPositionSec` |
 | 학습 상태 | `PATCH .../learning-state` | `{ "learningStatus": "not_started" \| "in_progress" \| "completed" \| "on_hold" }` |
 | 진행률 | `PATCH .../progress` | `{ "progressPercent": 0–100 }` — 상세 스크럽 디바운스 ~0.9s |
 
@@ -80,8 +89,10 @@ configureApiClient({
 | `interceptors.ts` | 응답 파싱·unwrap, 401/403 훅, `configureApiClient` |
 | `errors.ts` | `ApiError` |
 | `auth.ts` | 로그인 POST, 토큰 저장, `logoutClient` |
-| `dashboard.ts` | `GET /api/dashboard`, DTO→번들 매핑 |
-| `videos.ts` | `GET /api/videos`, `GET/PATCH` 상세·상태·진행률, DTO→`VideoLibraryEntry` / `VideoDetailDocument` |
+| `dashboard.ts` | `GET /api/v1/dashboard`, 정규화·DTO→번들 매핑 |
+| `videos.ts` | `GET /api/v1/videos`, `GET/PATCH` 상세·상태·진행률, DTO→`VideoLibraryEntry` / `VideoDetailDocument` |
+| `apiPaths.ts` | `API_V1_PREFIX` (`/api/v1`) |
+| `backendContract.ts` | 학습상태·우선순위 백엔드 enum ↔ UI 타입 변환 |
 | `notes.ts` ~ `analytics.ts` | 다음 단계용 스텁 |
 | `constants/videoCollections.ts` | 컬렉션 select용 정적 목록(추후 API 대체) |
 | `hooks/useVideoLibrary.ts` | 목록 로딩·에러·재시도·로컬 `setItems` |

@@ -6,6 +6,26 @@
   gap: var(--space-lg, 1.25rem);
 }
 
+.chlib-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: flex-end;
+}
+
+.chlib-empty-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.chlib-action-message {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
 .chlib-layout {
   display: grid;
   gap: var(--space-xl, 1.75rem);
@@ -388,6 +408,95 @@
   margin-top: var(--space-md, 1rem);
 }
 
+.chlib-panel__actions--split {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chlib-panel__feed {
+  margin-bottom: var(--space-md, 1rem);
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--color-border, #e2e4e8);
+  background: var(--color-surface-muted, #f9fafb);
+}
+
+.chlib-panel__feed-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.chlib-panel__feed-note {
+  margin: 0 0 0.65rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #6b7280);
+  line-height: 1.45;
+}
+
+.chlib-panel__feed-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chlib-panel__feed-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.5rem 0.55rem;
+  border-radius: var(--radius-md, 8px);
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e2e4e8);
+}
+
+.chlib-panel__feed-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.chlib-panel__feed-titleline {
+  margin: 0 0 0.2rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text, #111827);
+}
+
+.chlib-panel__feed-meta {
+  margin: 0;
+  font-size: 0.6875rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
+.chlib-panel__feed-id {
+  font-size: 0.6875rem;
+  padding: 0.1rem 0.25rem;
+  border-radius: 4px;
+  background: #f3f4f6;
+}
+
+.chlib-panel__feed-error {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-danger, #b91c1c);
+}
+
+.chlib-panel__feed-status,
+.chlib-panel__feed-empty {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted, #6b7280);
+}
+
 /* —— 리스트·일괄 구독 정리 뷰 —— */
 
 .chlib-page--bulk {
@@ -566,6 +675,16 @@
 .chlib-bulk-row__chip--learn {
   background: #eff6ff;
   color: #1d4ed8;
+}
+
+.chlib-bulk-row__cat-select {
+  max-width: 7.5rem;
+  font-size: 0.6875rem;
+  padding: 0.2rem 0.35rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-surface-elevated, #fff);
+  color: var(--color-text, #111827);
 }
 
 .chlib-bulk-row__action {

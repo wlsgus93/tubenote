@@ -1,3 +1,5 @@
+export { AddVideoByUrlDialog } from '@/features/video-management/AddVideoByUrlDialog'
+export type { AddVideoByUrlDialogProps } from '@/features/video-management/AddVideoByUrlDialog'
 export { filterAndSortVideos } from '@/features/video-management/filterVideos'
 export type { VideoLibraryFilterState } from '@/features/video-management/filterVideos'
 export { VideoLibraryGridCard } from '@/features/video-management/VideoLibraryGridCard'

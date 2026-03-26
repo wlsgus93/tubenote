@@ -92,6 +92,13 @@ public class OAuth2AuthenticationSuccessHandler implements AuthenticationSuccess
                         + "&tokenType=Bearer&expiresIn="
                         + expiresInSec;
 
+        // SPA는 JWT만 쓰므로 OAuth 세션을 끊는다. 남으면 API 에서 Principal 타입이 OidcUser 로 남아
+        // @AuthenticationPrincipal CustomUserPrincipal 이 null → NPE(500) 가 날 수 있음.
+        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
         response.sendRedirect(redirect);
     }
 

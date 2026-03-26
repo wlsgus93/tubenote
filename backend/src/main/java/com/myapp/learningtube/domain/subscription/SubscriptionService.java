@@ -3,9 +3,7 @@ package com.myapp.learningtube.domain.subscription;
 import com.myapp.learningtube.domain.subscription.dto.PatchSubscriptionRequest;
 import com.myapp.learningtube.domain.subscription.dto.SubscriptionResponse;
 import com.myapp.learningtube.domain.subscription.dto.SubscriptionSyncResponse;
-import com.myapp.learningtube.domain.user.OAuthProvider;
-import com.myapp.learningtube.domain.user.UserOAuthAccount;
-import com.myapp.learningtube.domain.user.UserOAuthAccountRepository;
+import com.myapp.learningtube.domain.auth.google.GoogleOAuthAccessTokenService;
 import com.myapp.learningtube.global.error.BusinessException;
 import com.myapp.learningtube.global.error.ErrorCode;
 import com.myapp.learningtube.infra.youtube.YoutubeSubscriptionListItem;
@@ -26,17 +24,17 @@ public class SubscriptionService {
     private static final Logger log = LoggerFactory.getLogger(SubscriptionService.class);
 
     private final UserSubscriptionRepository userSubscriptionRepository;
-    private final UserOAuthAccountRepository userOAuthAccountRepository;
+    private final GoogleOAuthAccessTokenService googleOAuthAccessTokenService;
     private final YoutubeSubscriptionsPort youtubeSubscriptionsPort;
     private final SubscriptionSyncItemService subscriptionSyncItemService;
 
     public SubscriptionService(
             UserSubscriptionRepository userSubscriptionRepository,
-            UserOAuthAccountRepository userOAuthAccountRepository,
+            GoogleOAuthAccessTokenService googleOAuthAccessTokenService,
             YoutubeSubscriptionsPort youtubeSubscriptionsPort,
             SubscriptionSyncItemService subscriptionSyncItemService) {
         this.userSubscriptionRepository = userSubscriptionRepository;
-        this.userOAuthAccountRepository = userOAuthAccountRepository;
+        this.googleOAuthAccessTokenService = googleOAuthAccessTokenService;
         this.youtubeSubscriptionsPort = youtubeSubscriptionsPort;
         this.subscriptionSyncItemService = subscriptionSyncItemService;
     }
@@ -47,7 +45,7 @@ public class SubscriptionService {
      */
     @Transactional
     public SubscriptionSyncResponse syncFromYoutube(Long userId) {
-        String token = resolveGoogleAccessToken(userId);
+        String token = googleOAuthAccessTokenService.resolveValidAccessToken(userId).orElse(null);
         if (youtubeSubscriptionsPort.requiresOAuthAccessToken()
                 && (token == null || token.isBlank())) {
             throw new BusinessException(
@@ -149,12 +147,4 @@ public class SubscriptionService {
         return SubscriptionDtoMapper.toResponse(us);
     }
 
-    private String resolveGoogleAccessToken(Long userId) {
-        return userOAuthAccountRepository
-                .findFirstByUser_IdAndProviderAndAccessTokenIsNotNullOrderByUpdatedAtDesc(
-                        userId, OAuthProvider.GOOGLE)
-                .map(UserOAuthAccount::getAccessToken)
-                .filter(t -> t != null && !t.isBlank())
-                .orElse(null);
-    }
 }

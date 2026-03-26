@@ -2,9 +2,7 @@ package com.myapp.learningtube.domain.subscription;
 
 import com.myapp.learningtube.domain.subscription.dto.ChannelUpdatesSyncResponse;
 import com.myapp.learningtube.domain.subscription.dto.SubscriptionRecentVideoResponse;
-import com.myapp.learningtube.domain.user.OAuthProvider;
-import com.myapp.learningtube.domain.user.UserOAuthAccount;
-import com.myapp.learningtube.domain.user.UserOAuthAccountRepository;
+import com.myapp.learningtube.domain.auth.google.GoogleOAuthAccessTokenService;
 import com.myapp.learningtube.domain.video.UserVideoRepository;
 import com.myapp.learningtube.global.error.BusinessException;
 import com.myapp.learningtube.global.error.ErrorCode;
@@ -25,7 +23,7 @@ public class SubscriptionChannelUpdatesService {
     private static final Logger log = LoggerFactory.getLogger(SubscriptionChannelUpdatesService.class);
 
     private final UserSubscriptionRepository userSubscriptionRepository;
-    private final UserOAuthAccountRepository userOAuthAccountRepository;
+    private final GoogleOAuthAccessTokenService googleOAuthAccessTokenService;
     private final YoutubeChannelUploadsPort youtubeChannelUploadsPort;
     private final YoutubeApiProperties youtubeApiProperties;
     private final SubscriptionChannelUpdatesSyncItemService subscriptionChannelUpdatesSyncItemService;
@@ -34,14 +32,14 @@ public class SubscriptionChannelUpdatesService {
 
     public SubscriptionChannelUpdatesService(
             UserSubscriptionRepository userSubscriptionRepository,
-            UserOAuthAccountRepository userOAuthAccountRepository,
+            GoogleOAuthAccessTokenService googleOAuthAccessTokenService,
             YoutubeChannelUploadsPort youtubeChannelUploadsPort,
             YoutubeApiProperties youtubeApiProperties,
             SubscriptionChannelUpdatesSyncItemService subscriptionChannelUpdatesSyncItemService,
             SubscriptionRecentVideoRepository subscriptionRecentVideoRepository,
             UserVideoRepository userVideoRepository) {
         this.userSubscriptionRepository = userSubscriptionRepository;
-        this.userOAuthAccountRepository = userOAuthAccountRepository;
+        this.googleOAuthAccessTokenService = googleOAuthAccessTokenService;
         this.youtubeChannelUploadsPort = youtubeChannelUploadsPort;
         this.youtubeApiProperties = youtubeApiProperties;
         this.subscriptionChannelUpdatesSyncItemService = subscriptionChannelUpdatesSyncItemService;
@@ -51,7 +49,7 @@ public class SubscriptionChannelUpdatesService {
 
     @Transactional
     public ChannelUpdatesSyncResponse syncAllSubscribedChannels(Long userId) {
-        String token = resolveGoogleAccessToken(userId);
+        String token = googleOAuthAccessTokenService.resolveValidAccessToken(userId).orElse(null);
         if (youtubeChannelUploadsPort.requiresOAuthAccessToken()
                 && (token == null || token.isBlank())) {
             throw new BusinessException(
@@ -133,12 +131,4 @@ public class SubscriptionChannelUpdatesService {
         return page.map(srv -> SubscriptionRecentVideoMapper.toResponse(srv, userId, userVideoRepository));
     }
 
-    private String resolveGoogleAccessToken(Long userId) {
-        return userOAuthAccountRepository
-                .findFirstByUser_IdAndProviderAndAccessTokenIsNotNullOrderByUpdatedAtDesc(
-                        userId, OAuthProvider.GOOGLE)
-                .map(UserOAuthAccount::getAccessToken)
-                .filter(t -> t != null && !t.isBlank())
-                .orElse(null);
-    }
 }

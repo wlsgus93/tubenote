@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -40,6 +41,7 @@ public class SecurityConfig {
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final GoogleOidcUserService googleOidcUserService;
     private final CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository;
+    private final OAuth2AuthorizationRequestResolver oauth2AuthorizationRequestResolver;
 
     @Value("${spring.h2.console.enabled:false}")
     private boolean h2ConsoleEnabled;
@@ -51,7 +53,8 @@ public class SecurityConfig {
             OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
             OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler,
             GoogleOidcUserService googleOidcUserService,
-            CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository) {
+            CookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository,
+            OAuth2AuthorizationRequestResolver oauth2AuthorizationRequestResolver) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
         this.jwtAccessDeniedHandler = jwtAccessDeniedHandler;
@@ -59,6 +62,7 @@ public class SecurityConfig {
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
         this.googleOidcUserService = googleOidcUserService;
         this.cookieOAuth2AuthorizationRequestRepository = cookieOAuth2AuthorizationRequestRepository;
+        this.oauth2AuthorizationRequestResolver = oauth2AuthorizationRequestResolver;
     }
 
     @Bean
@@ -99,7 +103,9 @@ public class SecurityConfig {
                                 o.authorizationEndpoint(
                                                 a ->
                                                         a.authorizationRequestRepository(
-                                                                cookieOAuth2AuthorizationRequestRepository))
+                                                                        cookieOAuth2AuthorizationRequestRepository)
+                                                                .authorizationRequestResolver(
+                                                                        oauth2AuthorizationRequestResolver))
                                         .userInfoEndpoint(u -> u.oidcUserService(googleOidcUserService))
                                         .successHandler(oAuth2AuthenticationSuccessHandler)
                                         .failureHandler(oAuth2AuthenticationFailureHandler))
